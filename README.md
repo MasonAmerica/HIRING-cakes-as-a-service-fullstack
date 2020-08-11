@@ -5,10 +5,10 @@
 You are a developer for Cakes-As-A-Service, a personalized cake baking company that allows customers to design their own branded cakes and issue baking requests in bulk. Customer orders come in through a order prep web service and contain a pair of URLs to two arbitrary images -- one representing what the base cake should look like, and one for the brand or logo to represent via the icing on the cake. The web service determines if the images are suitable, generates coordinates to center the logo on the base, and then passes the request on to the kitchen web service with this metadata.
 
 ### Task 1 - Service
- Your task is to build a simple HTTP order prep web service that accepts URLs to two rectangular images -- one for the cake base and one for the logo. It must respond as follows:
+Your task is to build a simple HTTP order prep web service that accepts URLs to two rectangular images -- one for the cake base and one for the logo. It must respond as follows:
 
 * If the logo image cannot be fully contained within the base, reject the input. Note that rotation of either image is permitted if that will allow correct fitment.
-* If the logo image fits wholly within the base, return information on where within the base image the logo should be inset so that it is centered.
+* If the logo image fits wholly within the base, return information on where within the base image the logo should be inset so that it is centered. You may return the top left coordinate of the inset quadrilateral.
 
  Your service must obey the following interface:
 
@@ -16,7 +16,7 @@ You are a developer for Cakes-As-A-Service, a personalized cake baking company t
 
 Request body:
 
-```json
+```javascript
 {
 	"base": "url to base image",
 	"logo": "url to logo image"
@@ -26,18 +26,12 @@ Request body:
 Response body:
 `200 OK`
 
-```json
+```javascript
 {
 	"placement" : {
-		// where in "base" should "logo" be centered;
-		// the (x,y) coordinates of the base matching
-		// the (0,0) of the logo
-		"x" : xpos, // x coordinate of the top left
-					// *of base image* where logo image
-					// sits
-		"y" : ypos  // y coordinate of the top left
-					// *of base image* where logo image
-					// sits
+		// Where in "base" should "logo" be centered; the (x,y) coordinates of the base matching the (0,0) of the logo
+		"x" : xpos, // x coordinate of the top left *of base image* where logo image sits
+		"y" : ypos  // y coordinate of the top left *of base image* where logo image sits
 	}
 }
 ```
